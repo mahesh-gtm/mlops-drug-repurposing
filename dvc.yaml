@@ -1,0 +1,24 @@
+stages:
+  ingest:
+    cmd: python src/ingestion/data_ingest.py
+    deps:
+      - src/ingestion/data_ingest.py
+    outs:
+      - data/raw
+
+  build_graph:
+    cmd: python src/preprocessing/build_graph.py
+    deps:
+      - data/raw
+      - src/preprocessing/build_graph.py
+    outs:
+      - data/processed/graph.pt
+
+  train:
+    cmd: python src/training/train_gnn.py
+    deps:
+      - data/processed/graph.pt
+      - src/training/train_gnn.py
+    outs:
+      - artifacts/model.pt
+      - artifacts/metrics.json

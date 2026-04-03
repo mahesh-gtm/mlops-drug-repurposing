@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+data/processed/*
+mlruns/
+artifacts/
+*.pt
+.env
+.DS_Store

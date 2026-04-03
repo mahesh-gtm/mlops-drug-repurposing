@@ -1,0 +1,12 @@
+services:
+  mlops-app:
+    build: .
+    ports:
+      - "8000:8000"   # FastAPI
+      - "8501:8501"   # Streamlit
+    volumes:
+      - ./data:/app/data
+      - ./mlruns:/app/mlruns
+      - ./artifacts:/app/artifacts
+    environment:
+      - MLFLOW_TRACKING_URI=http://localhost:5000
