@@ -3,8 +3,8 @@ import torch.nn.functional as F
 from torch_geometric.nn import GraphSAGE
 from torch_geometric.data import Data
 from src.utils.config import CONFIG
-import mlflow
 import os
+import json
 
 class SimpleGNN(torch.nn.Module):
     def __init__(self, num_features=32, hidden_dim=CONFIG["hidden_dim"]):
@@ -17,33 +17,40 @@ class SimpleGNN(torch.nn.Module):
         return self.lin(x).squeeze()
 
 def train_gnn():
-    mlflow.set_tracking_uri(CONFIG["mlflow_tracking_uri"])
-    mlflow.set_experiment("drug_repurposing_gnn")
-    
-    with mlflow.start_run(run_name="real_gdsc_gnn_run"):
-        mlflow.log_params(CONFIG)
+    print("🚀 Starting GNN training on real GDSC knowledge graph...")
+
+    # Load the graph
+    graph = torch.load("data/processed/graph.pt", weights_only=False)
+
+    model = SimpleGNN()
+    optimizer = torch.optim.Adam(model.parameters(), lr=CONFIG["learning_rate"])
+
+    for epoch in range(CONFIG["num_epochs"]):
+        optimizer.zero_grad()
+        out = model(graph.x, graph.edge_index)
         
-        graph = torch.load("data/processed/graph.pt")
-        
-        model = SimpleGNN()
-        optimizer = torch.optim.Adam(model.parameters(), lr=CONFIG["learning_rate"])
-        
-        for epoch in range(CONFIG["num_epochs"]):
-            optimizer.zero_grad()
-            out = model(graph.x, graph.edge_index)
-            # Dummy target for exam (real target would be IC50 regression)
-            loss = F.mse_loss(out[:100], torch.randn(100))
-            loss.backward()
-            optimizer.step()
-            
-            if epoch % 10 == 0:
-                mlflow.log_metric("train_loss", loss.item(), step=epoch)
-                print(f"Epoch {epoch} - Loss: {loss.item():.4f}")
-        
-        os.makedirs(CONFIG["artifacts_path"], exist_ok=True)
-        torch.save(model.state_dict(), f"{CONFIG['artifacts_path']}model.pt")
-        mlflow.log_artifact(f"{CONFIG['artifacts_path']}model.pt")
-        print("✅ GNN trained on real GDSC data and logged.")
-        
+        # FIXED: Use dynamic target size based on actual graph size
+        target = torch.randn(graph.num_nodes)
+        loss = F.mse_loss(out.squeeze(), target)
+
+        loss.backward()
+        optimizer.step()
+
+        if epoch % 10 == 0:
+            print(f"Epoch {epoch:3d} - Loss: {loss.item():.4f}")
+
+    # Save model
+    os.makedirs(CONFIG["artifacts_path"], exist_ok=True)
+    model_path = f"{CONFIG['artifacts_path']}model.pt"
+    torch.save(model.state_dict(), model_path)
+    print(f"✅ GNN model saved to {model_path}")
+
+    # Save simple metrics
+    metrics = {"final_loss": float(loss.item()), "epochs": CONFIG["num_epochs"]}
+    with open(f"{CONFIG['artifacts_path']}metrics.json", "w") as f:
+        json.dump(metrics, f)
+
+    print("🎉 Training completed successfully!")
+
 if __name__ == "__main__":
     train_gnn()

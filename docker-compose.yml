@@ -1,4 +1,23 @@
 services:
+  # Automatic pipeline initialization (runs once on startup)
+  pipeline-init:
+    build: .
+    volumes:
+      - ./data:/app/data
+      - ./mlruns:/app/mlruns
+      - ./artifacts:/app/artifacts
+    command: |
+      sh -c "
+        echo '🚀 Starting full MLOps pipeline...' &&
+        python -m src.ingestion.data_ingest &&
+        python -m src.preprocessing.build_graph &&
+        python -m src.training.train_gnn &&
+        echo '✅ Pipeline initialization completed successfully!'
+      "
+    # This service runs first and finishes before others start
+    restart: "no"
+
+  # FastAPI backend
   fastapi:
     build: .
     ports:
@@ -8,7 +27,10 @@ services:
       - ./mlruns:/app/mlruns
       - ./artifacts:/app/artifacts
     command: uvicorn api.main:app --host 0.0.0.0 --port 8000
+    depends_on:
+      - pipeline-init
 
+  # Streamlit frontend
   streamlit:
     build: .
     ports:
@@ -18,20 +40,5 @@ services:
       - ./mlruns:/app/mlruns
       - ./artifacts:/app/artifacts
     command: streamlit run frontend/app.py --server.port 8501 --server.address 0.0.0.0
-
-  # New service: Runs the full pipeline once on startup
-  pipeline-init:
-    build: .
-    volumes:
-      - ./data:/app/data
-      - ./mlruns:/app/mlruns
-      - ./artifacts:/app/artifacts
-    command: |
-      sh -c "
-        python -m src.ingestion.data_ingest &&
-        python -m src.preprocessing.build_graph &&
-        python -m src.training.train_gnn &&
-        echo '✅ Pipeline initialization completed successfully'
-      "
     depends_on:
-      - fastapi
+      - pipeline-init
