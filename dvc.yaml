@@ -3,22 +3,61 @@ stages:
     cmd: python src/ingestion/data_ingest.py
     deps:
       - src/ingestion/data_ingest.py
+      - src/utils/config.py
     outs:
-      - data/raw
+      - data/raw:
+          desc: "Raw GDSC2 data from ingestion"
+      - data/splits:
+          desc: "Train/val/test split datasets"
+    metrics:
+      - data/raw/gdsc2_original.csv:
+          cache: false
 
   build_graph:
     cmd: python src/preprocessing/build_graph.py
     deps:
       - data/raw
       - src/preprocessing/build_graph.py
+      - src/utils/config.py
     outs:
-      - data/processed/graph.pt
+      - data/processed/graph.pt:
+          desc: "PyTorch Geometric graph representation"
+    plots:
+      - data/processed/graph_stats.json:
+          cache: false
+          desc: "Graph statistics (nodes, edges)"
 
   train:
     cmd: python src/training/train_gnn.py
     deps:
       - data/processed/graph.pt
+      - data/splits
       - src/training/train_gnn.py
+      - src/utils/config.py
+    params:
+      - src/utils/config.py:
+          - num_epochs
+          - learning_rate
+          - hidden_dim
+          - batch_size
+          - train_split
+          - val_split
+          - test_split
+    plots:
+      - artifacts/metrics.json:
+          x: epochs_trained
+          y:
+            artifacts/metrics.json: [test_loss, test_r2_score]
+          template: linear
+          title: "Model Performance Metrics"
     outs:
-      - artifacts/model.pt
-      - artifacts/metrics.json
+      - artifacts/model.pt:
+          desc: "Trained GNN model weights"
+          type: model
+      - artifacts/metrics.json:
+          desc: "Final evaluation metrics"
+          cache: false
+    metrics:
+      - artifacts/metrics.json:
+          cache: false
+          desc: "Model evaluation results"

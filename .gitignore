@@ -1,8 +1,31 @@
 __pycache__/
 *.pyc
 data/processed/*
+data/splits/*
 mlruns/
 artifacts/
 *.pt
 .env
 .DS_Store
+
+# DVC
+.dvc/config.local
+.dvc/cache/
+.dvc/tmp/
+*.dvc.lock
+
+# Virtual environments
+venv/
+.venv/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Testing
+.pytest_cache/
+htmlcov/
+.coverage

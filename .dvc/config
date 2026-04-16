@@ -1,0 +1,6 @@
+[core]
+    analytics = false
+    autostage = true
+    check_update = false
+['remote "local-storage"']
+    url = .dvc/cache/storage
