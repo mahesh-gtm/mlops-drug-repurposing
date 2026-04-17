@@ -549,28 +549,7 @@ dvc metrics show
    - Root cause: Limited data diversity, narrow target range
    - Solution: Implement semi-supervised learning or synthetic negative examples
 
-### 10.2 Production Scaling Roadmap
-
-**Phase 1 (Current)**: Proof of concept infrastructure
-- ✅ End-to-end pipeline working
-- ✅ Monitoring and versioning in place
-- ⚠️ Model performance limited by data
-
-**Phase 2 (Recommended)**: Data scaling
-- [ ] Integrate additional GDSC2 records (1,000+ pairs)
-- [ ] Add protein-interaction network data
-- [ ] Implement data augmentation
-
-**Phase 3**: Model improvements
-- [ ] Implement contrastive learning for better embeddings
-- [ ] Add semi-supervised learning (leverage unlabeled drug-disease pairs)
-- [ ] Ensemble multiple graph architectures (GAT, GCN, GraphSAGE)
-
-**Phase 4**: Infrastructure
-- [ ] Deploy to cloud (AWS/GCP/Azure)
-- [ ] Use Kubernetes instead of Docker Compose
-- [ ] Implement feature store (Tecton, Feast)
-- [ ] Add A/B testing framework
+ 
 
 ---
 
