@@ -1,0 +1,15 @@
+{
+  "final_train_loss": 0.5117340087890625,
+  "final_val_loss": 0.6318984627723694,
+  "test_loss": 0.5303894281387329,
+  "test_mae": 0.2018783986568451,
+  "test_r2_score": 0.0006630420684814453,
+  "epochs_trained": 25,
+  "early_stopped": true,
+  "num_parameters": 37249,
+  "train_pairs": 17,
+  "val_pairs": 3,
+  "test_pairs": 5,
+  "num_drugs": 5,
+  "num_diseases": 5
+}

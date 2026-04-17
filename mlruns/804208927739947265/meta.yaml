@@ -1,0 +1,6 @@
+artifact_location: /app/mlruns/804208927739947265
+creation_time: 1776377141454
+experiment_id: '804208927739947265'
+last_update_time: 1776377141454
+lifecycle_stage: active
+name: drug-repurposing-gnn

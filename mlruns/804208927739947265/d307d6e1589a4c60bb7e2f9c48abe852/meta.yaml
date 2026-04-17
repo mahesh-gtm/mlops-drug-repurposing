@@ -1,0 +1,15 @@
+artifact_uri: /app/mlruns/804208927739947265/d307d6e1589a4c60bb7e2f9c48abe852/artifacts
+end_time: 1776377926939
+entry_point_name: ''
+experiment_id: '804208927739947265'
+lifecycle_stage: active
+run_id: d307d6e1589a4c60bb7e2f9c48abe852
+run_name: gnn-training
+run_uuid: d307d6e1589a4c60bb7e2f9c48abe852
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776377916284
+status: 3
+tags: []
+user_id: root

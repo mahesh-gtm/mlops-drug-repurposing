@@ -1,0 +1,12 @@
+{
+  "num_nodes": 15,
+  "num_edges": 40,
+  "num_drugs": 5,
+  "num_cell_lines": 5,
+  "num_diseases": 5,
+  "node_feature_dim": 16,
+  "graph_density": 0.19047619047619047,
+  "avg_degree": 2.6666666666666665,
+  "is_connected": true,
+  "num_connected_components": 1
+}
