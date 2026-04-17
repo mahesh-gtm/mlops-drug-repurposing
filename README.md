@@ -610,7 +610,7 @@ MIT License - see LICENSE file
 
 - **Issues**: Create a GitHub issue for bugs or feature requests
 - **Discussions**: Use GitHub Discussions for questions
-- **Email**: mahesh@example.com
+- **Email**: maheshgautam345@gmail.com
 
 ---
 
@@ -624,6 +624,6 @@ MIT License - see LICENSE file
 
 **Last Updated**: April 16, 2026  
 **Version**: 1.0  
-**Maintainer**: MLOps Team
+**Maintainer**: Mahesh gautam
 
 🌟 If this project helped you, please consider giving it a star!
