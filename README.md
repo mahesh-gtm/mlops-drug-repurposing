@@ -23,6 +23,8 @@
 ---
 
 ## 🚀 Quick Start
+link to the running ui - [
+](https://jubilant-lamp-5vqg447xj6jpc7rg5-8501.app.github.dev/)
 
 ### Prerequisites
 - Docker & Docker Compose
@@ -44,8 +46,7 @@ docker-compose logs -f pipeline-init
 
 # Access services
 open http://localhost:8501          # Streamlit UI
-open http://localhost:8000/docs      # API Swagger docs
-open http://localhost:5000           # MLflow tracking (after training)
+ 
 ```
 
 That's it! The pipeline automatically:
