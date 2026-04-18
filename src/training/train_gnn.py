@@ -43,6 +43,10 @@ class DrugRepurposingGNN(torch.nn.Module):
 def train_gnn():
     print("🚀 Starting GNN training with drug-disease queries...")
 
+    # === Ensure artifacts directory exists for MLflow ===
+    artifacts_path = Path(CONFIG["artifacts_path"])
+    artifacts_path.mkdir(parents=True, exist_ok=True)
+    
     # === MLflow Setup ===
     mlflow.set_tracking_uri(CONFIG["mlflow_tracking_uri"])
     mlflow.set_experiment(CONFIG["mlflow_experiment_name"])

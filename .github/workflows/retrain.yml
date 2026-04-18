@@ -25,6 +25,9 @@ jobs:
       - name: Install dependencies
         run: pip install --no-cache-dir -r requirements.txt
 
+      - name: Create necessary directories
+        run: mkdir -p data/raw data/processed data/splits artifacts mlruns
+
       # === FIXED COMMANDS BELOW (using python -m) ===
       - name: Ingest real GDSC data
         run: python -m src.ingestion.data_ingest
