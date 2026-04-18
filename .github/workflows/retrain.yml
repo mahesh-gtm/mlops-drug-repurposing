@@ -2,11 +2,8 @@ name: Daily GNN Retraining
 
 on:
   schedule:
-    - cron: '*/10 * * * *'  # Every 10 minutes for testing
+    - cron: '0 3 * * *'     # Daily at 03:00 UTC
   workflow_dispatch:        # Manual trigger
-  push:
-    branches:
-      - main
 
 jobs:
   retrain:
