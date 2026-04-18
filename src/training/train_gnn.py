@@ -44,11 +44,12 @@ def train_gnn():
     print("🚀 Starting GNN training with drug-disease queries...")
 
     # === Ensure artifacts directory exists for MLflow ===
-    artifacts_path = Path(CONFIG["artifacts_path"])
+    artifacts_path = Path(CONFIG["artifacts_path"]).resolve()
     artifacts_path.mkdir(parents=True, exist_ok=True)
     
-    # === MLflow Setup ===
-    mlflow.set_tracking_uri(CONFIG["mlflow_tracking_uri"])
+    # === MLflow Setup with absolute path ===
+    mlflow_uri = Path(CONFIG["mlflow_tracking_uri"]).resolve()
+    mlflow.set_tracking_uri(f"file:{str(mlflow_uri)}")
     mlflow.set_experiment(CONFIG["mlflow_experiment_name"])
     
     with mlflow.start_run(run_name="gnn-training") as run:
@@ -256,16 +257,18 @@ def train_gnn():
         })
 
         # Save model
-        artifacts_path = Path(CONFIG["artifacts_path"])
+        artifacts_path = Path(CONFIG["artifacts_path"]).resolve()
         artifacts_path.mkdir(parents=True, exist_ok=True)
         
         model_path = artifacts_path / "model.pt"
         torch.save(model.state_dict(), model_path)
         print(f"✅ GNN model saved to {model_path}")
         
-        # Log model to MLflow
-        mlflow.pytorch.log_model(model, "model")
-        mlflow.log_artifact(str(model_path))
+        # Log model to MLflow (simplified: just log artifact, skip pytorch.log_model due to permissions)
+        try:
+            mlflow.log_artifact(str(model_path))
+        except Exception as e:
+            print(f"⚠️  Warning: Could not log model artifact to MLflow: {e}")
 
         # Save comprehensive metrics
         metrics = {
@@ -288,7 +291,10 @@ def train_gnn():
         with open(metrics_path, "w") as f:
             json.dump(metrics, f, indent=2)
         
-        mlflow.log_artifact(str(metrics_path))
+        try:
+            mlflow.log_artifact(str(metrics_path))
+        except Exception as e:
+            print(f"⚠️  Warning: Could not log metrics artifact to MLflow: {e}")
         
         print(f"💾 Metrics saved to {metrics_path}")
         print(f"📊 View results: mlflow ui --backend-store-uri {CONFIG['mlflow_tracking_uri']}")
