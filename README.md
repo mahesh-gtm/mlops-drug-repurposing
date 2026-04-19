@@ -626,4 +626,4 @@ MIT License - see LICENSE file
 **Version**: 1.0  
 **Maintainer**: Mahesh gautam
 
-🌟 If this project helped you, please consider giving it a star!
+ 
