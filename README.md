@@ -23,7 +23,7 @@
 ---
 
 ## 🚀 Quick Start
-link to the running ui - [
+link to the running ui - [streamlit app
 ](https://jubilant-lamp-5vqg447xj6jpc7rg5-8501.app.github.dev/)
 
 ### Prerequisites
