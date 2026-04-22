@@ -23,8 +23,7 @@
 ---
 
 ## 🚀 Quick Start
-link to the streamlit after the docker is run  - [streamlit app
-](https://jubilant-lamp-5vqg447xj6jpc7rg5-8501.app.github.dev/)
+link to the streamlit after the docker is run  at port 8501
 
 ### Prerequisites
 - Docker & Docker Compose
